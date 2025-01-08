@@ -5,7 +5,6 @@ is not the only way to help the community. Answering questions, helping
 others, reaching out, and improving the documentation are all immensely valuable
 to the community.
 
-
 ## You can contribute in so many ways!
 
 There are 3 ways you can contribute to this project:
@@ -18,13 +17,11 @@ _All are equally valuable to the community._
 
 We also onboard new volunteers to USDR projects in general at [https://www.usdigitalresponse.org/raisingyourhand](https://www.usdigitalresponse.org/raisingyourhand). Please sign up if you’d like to help on other projects.
 
-
 ## Submitting a new issue or feature request
 
 Do your best to follow these guidelines when submitting an issue or a feature
 request. It will make it easier for us to come back to you quickly and with good
 feedback.
-
 
 ### Did you find a bug?
 
@@ -41,7 +38,6 @@ Did not find it? :( So we can act quickly on it, please include the following:
 - If the problem was with the demo UI or docs pages, your **browser (e.g. Firefox, Chrome, Edge, Internet Explorer)**.
 - Any code errors that you have access to.
 
-
 ### Do you want a new feature?
 
 A world-class feature request addresses the following points:
@@ -57,7 +53,6 @@ A world-class feature request addresses the following points:
 
 If your issue is well written, we’re already 80% of the way there by the time you
 post it.
-
 
 ## Start contributing! (Pull Requests)
 
@@ -120,7 +115,6 @@ Follow these steps to start contributing:
    branch and push the changes to your fork. They will automatically appear in
    the pull request.
 
-
 ### Checklist
 
 1. The title of your pull request should be a summary of its contribution;
@@ -135,6 +129,5 @@ Follow these steps to start contributing:
    ![Creating a draft pull request](./docs/_assets/draft-pr.png)
 
 4. If there are any tests, make sure that they pass and cover your new features and bugfixes.
-
 
 #### This guide was based on [HuggingFace/transformers](https://github.com/huggingface/transformers/blob/master/CONTRIBUTING.md) which was itself based on [SciKit-Learn](https://github.com/scikit-learn/scikit-learn/blob/master/CONTRIBUTING.md)
