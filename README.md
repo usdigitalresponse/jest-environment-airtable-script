@@ -68,7 +68,9 @@ You will probably want to load your Airtable scripts from a separate file for te
 // my-script.js
 const table = base.getTable('My Table')
 output.text(table.name)
+```
 
+```js
 // my-script.test.js
 import fs from 'fs'
 import baseFixture from './base-fixture.js'
