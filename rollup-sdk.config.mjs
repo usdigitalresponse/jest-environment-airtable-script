@@ -16,7 +16,7 @@ export default {
     commonjs(),
   ],
   output: {
-    file: './src/environment/sdk/__sdk.js',
+    file: './src/environment/sdk.js',
     format: 'iife',
   },
 }
