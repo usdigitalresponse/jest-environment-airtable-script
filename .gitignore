@@ -130,4 +130,4 @@ dist
 .pnp.*
 
 dist
-NOTES.txt
+src/environment/sdk.js

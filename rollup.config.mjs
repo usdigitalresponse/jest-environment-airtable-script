@@ -42,7 +42,7 @@ export default [
     },
   }),
   {
-    input: './src/environment/sdk/__sdk.js',
+    input: './src/environment/sdk.js',
     output: {
       file: './dist/sdk.js',
     },
