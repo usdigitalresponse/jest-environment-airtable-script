@@ -6,7 +6,7 @@ describe('automationOutput', () => {
     __output.length = 0
   })
 
-  test('should set key and value', () => {
+  it('should set key and value', () => {
     automationOutput.set('key1', 'value1')
     expect(__output).toEqual([{ key: 'key1', value: 'value1' }])
   })
@@ -17,17 +17,17 @@ describe('extensionOutput', () => {
     __output.length = 0
   })
 
-  test('should add text to output', () => {
+  it('should add text to output', () => {
     extensionOutput.text('some text')
     expect(__output).toEqual(['some text'])
   })
 
-  test('should add markdown to output', () => {
+  it('should add markdown to output', () => {
     extensionOutput.markdown('**some** markdown')
     expect(__output).toEqual(['**some** markdown'])
   })
 
-  test('should add table to output', () => {
+  it('should add table to output', () => {
     const table = [
       ['a', 1],
       ['b', 2],
@@ -38,13 +38,13 @@ describe('extensionOutput', () => {
     ])
   })
 
-  test('should add inspected object to output', () => {
+  it('should add inspected object to output', () => {
     const obj = { key: 'value' }
     extensionOutput.inspect(obj)
     expect(__output).toEqual([JSON.stringify(obj)])
   })
 
-  test('should clear the output', () => {
+  it('should clear the output', () => {
     extensionOutput.text('some text')
     extensionOutput.clear()
     expect(__output[0]).toEqual('some text')
