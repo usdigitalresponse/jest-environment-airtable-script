@@ -11,10 +11,6 @@ class Record {
    */
   id: string
   /**
-   * The primary cell value as a string, or 'Unnamed record' if primary cell value is empty.
-   */
-  name: string
-  /**
    * The raw cell values of this record.
    */
   private _cellValues: { [key: string]: unknown }
@@ -33,10 +29,16 @@ class Record {
 
   constructor(data: FixtureRecord, fields: Field[]) {
     this.id = data.id
-    this.name = data.name || ''
     this._cellValues = data.cellValuesByFieldId
     this._fields = fields
     this._accessibleFields = fields
+  }
+
+  get name(): string {
+    if (!this._fields || !this._fields[0]) {
+      return ''
+    }
+    return this.getCellValueAsString(this._fields[0])
   }
 
   /**

@@ -9,7 +9,6 @@ describe('Record', () => {
 
   const data = {
     id: 'rec1',
-    name: 'Test Record',
     cellValuesByFieldId: {
       fld1: 'Value 1',
       fld2: 'Value 2',
@@ -22,32 +21,32 @@ describe('Record', () => {
     record = new Record(data, fields)
   })
 
-  test('should create a record with correct id and name', () => {
+  it('should create a record with correct id and name', () => {
     expect(record.id).toBe('rec1')
-    expect(record.name).toBe('Test Record')
+    expect(record.name).toBe('Value 1')
   })
 
-  test('should get cell value by a Field class', () => {
+  it('should get cell value by a Field class', () => {
     expect(record.getCellValue(fields[0])).toBe('Value 1')
     expect(record.getCellValue(fields[1])).toBe('Value 2')
   })
 
-  test('should get cell value by field id', () => {
+  it('should get cell value by field id', () => {
     expect(record.getCellValue('fld1')).toBe('Value 1')
     expect(record.getCellValue('fld2')).toBe('Value 2')
   })
 
-  test('should get cell value by field name', () => {
+  it('should get cell value by field name', () => {
     expect(record.getCellValue('Field 1')).toBe('Value 1')
     expect(record.getCellValue('Field 2')).toBe('Value 2')
   })
 
-  test('should get cell value as string', () => {
+  it('should get cell value as string', () => {
     expect(record.getCellValueAsString('fld1')).toBe('Value 1')
     expect(record.getCellValueAsString('fld2')).toBe('Value 2')
   })
 
-  test('should throw error if field not found', () => {
+  it('should throw error if field not found', () => {
     expect(() => record.getCellValue('fld3')).toThrow(
       'No field matching "fld3" found in table'
     )

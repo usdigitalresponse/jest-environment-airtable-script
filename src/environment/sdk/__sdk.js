@@ -8531,10 +8531,15 @@
     class Record {
         constructor(data, fields) {
             this.id = data.id;
-            this.name = data.name || '';
             this._cellValues = data.cellValuesByFieldId;
             this._fields = fields;
             this._accessibleFields = fields;
+        }
+        get name() {
+            if (!this._fields || !this._fields[0]) {
+                return '';
+            }
+            return this.getCellValueAsString(this._fields[0]);
         }
         /**
          * Gets a field ID based on whether an item is a Field object, field ID, or field name.
