@@ -8,7 +8,7 @@
   "types": "./dist/index.d.ts",
   "repository": {
     "type": "git",
-    "url": "https://github.com/usdigitalresponse/jest-environment-airtable-script"
+    "url": "git+https://github.com/usdigitalresponse/jest-environment-airtable-script.git"
   },
   "homepage": "https://github.com/usdigitalresponse/jest-environment-airtable-script",
   "bugs": {
