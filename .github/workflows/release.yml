@@ -2,17 +2,14 @@ name: Create and publish a release
 
 on:
   push:
-    branches: ['release']
+    branches: ['main']
 
 jobs:
   build-and-push-package:
     runs-on: ubuntu-latest
 
     permissions:
-      contents: read
-      packages: write
-      attestations: write
-      id-token: write
+      contents: write
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -26,8 +23,13 @@ jobs:
         run: npm i
       - name: Build package
         run: npm run build
-
-      - name: Publish
-        run: npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Package release
+        run: npm pack
+      - name: get-npm-version
+        id: package-version
+        uses: martinbeentjes/npm-get-version-action@v1.3.1
+      - uses: ncipollo/release-action@v1
+        with:
+          artifacts: 'jest-environment-airtable-script-*.tgz'
+          bodyFile: 'CHANGELOG.md'
+          tag: v${{ steps.package-version.outputs.current-version }}
