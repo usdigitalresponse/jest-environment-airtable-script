@@ -1,5 +1,6 @@
 /**
- * A pascal case utility function.
+ * A pascal case utility function. Used for schema IDs, which always start with
+ * a three-letter lower-case prefix like tblTableId or fldFieldId.
  */
 const pascalCase = (str: string): string =>
   str

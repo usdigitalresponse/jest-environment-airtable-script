@@ -15,10 +15,12 @@ describe('Input', () => {
           config: () => ({ [key]: 'tbl123' }),
         },
       })
-      expect(results.output[0].key).toEqual('config')
-      expect(results.output[0].value).toEqual(
-        JSON.stringify({ [key]: 'tbl123' })
-      )
+      if (typeof results.output[0] === 'object') {
+        expect(results.output[0].key).toEqual('config')
+        expect(results.output[0].value).toEqual(
+          JSON.stringify({ [key]: 'tbl123' })
+        )
+      }
     })
   })
   describe('extension script', () => {

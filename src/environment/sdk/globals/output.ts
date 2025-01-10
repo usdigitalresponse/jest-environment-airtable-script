@@ -20,12 +20,18 @@ type ExtensionOutput = {
 // @ts-ignore
 globalThis.__output = []
 
+/**
+ * The output object if a script is being used within an automation.
+ */
 const automationOutput: AutomationOutput = {
   set: (key, value) => {
     __output.push({ key, value })
   },
 }
 
+/**
+ * The output object if a script is being used within an extension.
+ */
 const extensionOutput: ExtensionOutput = {
   /**
    * Displays the given text on-screen.
@@ -88,6 +94,7 @@ const extensionOutput: ExtensionOutput = {
   },
 }
 
+// Use one of the two outputs based on the context (extension or automation)
 const output: AutomationOutput | ExtensionOutput = globalThis.__inAutomation
   ? automationOutput
   : extensionOutput

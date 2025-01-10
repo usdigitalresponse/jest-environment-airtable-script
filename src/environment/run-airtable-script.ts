@@ -11,6 +11,8 @@ import {
 
 type DefaultDateLocale = 'friendly' | 'us' | 'european' | 'iso'
 
+type Output = [string, number, boolean] | { key: string; value: string }[]
+
 type RunScriptOptions = {
   script: string
   base: { base: unknown } | unknown
@@ -24,7 +26,7 @@ type RunScriptOptions = {
 }
 
 type RunScriptResult = {
-  output: unknown[]
+  output: Output
   mutations: Mutation[]
   console: ConsoleMessage[]
 }
@@ -93,7 +95,7 @@ const runAirtableScript = async ({
   )
 
   return {
-    output: context.__output || [],
+    output: (context.__output as Output) || [],
     mutations: context.__mutations || [],
     console: context.console._getMessages(),
   }
