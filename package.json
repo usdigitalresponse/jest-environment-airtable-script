@@ -1,6 +1,6 @@
 {
   "name": "jest-environment-airtable-script",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A jest environment for testing Airtable scripts in extensions and automations",
   "license": "Apache-2.0",
   "author": "",

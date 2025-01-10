@@ -66,7 +66,7 @@ const runAirtableScript = async ({
     // The path is dynamically rewritten in the build script
     const sdkScriptPath = process.env.JEST_AIRTABLE_TS_DEV
       ? './src/environment/sdk.js'
-      : './sdk.js'
+      : __dirname + '/sdk.js'
     sdkScript = fs.readFileSync(sdkScriptPath, 'utf8').toString()
   }
 
