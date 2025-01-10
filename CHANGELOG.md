@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 - Removed the `__sdk.js` developer file from the respoitory.
+- Fixed the types for runAirtableScript.
 
 ## [0.0.2] - 2025-01-09
 
