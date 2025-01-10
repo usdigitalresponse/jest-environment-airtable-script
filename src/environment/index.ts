@@ -12,15 +12,13 @@ import { OUTPUT_CLEAR } from './output-clear'
 
 type StrictGlobal = {
   runAirtableScript: (options: RunScriptOptions) => Promise<RunScriptResult>
-  MutationTypes: typeof MutationTypes | undefined
-  OUTPUT_CLEAR: typeof OUTPUT_CLEAR | undefined
+  MutationTypes: typeof MutationTypes
+  OUTPUT_CLEAR: typeof OUTPUT_CLEAR
 }
 
 export type AirtableScriptGlobal = Required<StrictGlobal>
 
 export class AirtableScriptEnvironment extends NodeEnvironment {
-  declare global: StrictGlobal & NodeEnvironment['global']
-
   constructor(config: JestEnvironmentConfig, _context: EnvironmentContext) {
     super(config, _context)
     this.global.runAirtableScript = runAirtableScript

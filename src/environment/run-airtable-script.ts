@@ -47,6 +47,9 @@ type RunContext = {
 
 let sdkScript: string | null = null
 
+/**
+ * Runs a given Airtable script against a base fixture. Full definition is in src/environment/index.ts
+ */
 const runAirtableScript = async ({
   script,
   base,
@@ -77,8 +80,8 @@ const runAirtableScript = async ({
     __defaultDateLocale: defaultDateLocale,
     console: consoleAggregator(),
   }
-  vm.createContext(context)
 
+  vm.createContext(context)
   vm.runInContext(sdkScript, context)
   // We need to run the script in an async function so that we can use await
   // directly inside the script.
