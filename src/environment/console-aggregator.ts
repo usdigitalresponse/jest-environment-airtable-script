@@ -13,6 +13,9 @@ type ConsoleAggregator = {
 /**
  * Returns a console object that aggregates all messages logged to it.
  * Used to override the global console object in tests.
+ *
+ * The _getMessages method is called after a test is run to pass the
+ * messages to the test runner.
  */
 const consoleAggregator = (): ConsoleAggregator => {
   const consoleMessages: ConsoleMessage[] = []

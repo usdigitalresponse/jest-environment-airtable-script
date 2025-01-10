@@ -118,6 +118,47 @@ const result = await runAirtableScript({
 
 You can pass one of `us`, `friendly`, `european`, or `iso`.
 
+### Mocking fetch requests
+
+Airtable scripts can either use `fetch`, or in extensions `remoteFetchAsync` to make HTTP requests. You can mock these requests using the `fetchMock` setting:
+
+```js
+const result = await runAirtableScript({
+  script: myScript,
+  base: baseFixture,
+  fetchMock: (url, request) => {
+    return {
+      status: 200,
+      body: JSON.stringify({ message: 'Hello, world!' }),
+    }
+  },
+})
+```
+
+### Mocking user inputs
+
+You can mock any `input` from either an automation input or user interaction using the `mockInput` setting:
+
+```js
+const results = await runAirtableScript({
+  script: `
+  const text = await input.textAsync('Select a table')
+  output.inspect(text)
+`,
+  base: randomRecords,
+  mockInput: {
+    // @ts-ignore
+    textAsync: (label) => {
+      if (label === 'Select a table') {
+        return 'text123'
+      }
+    },
+  },
+})
+```
+
+Every [input method for extensions or automations](https://airtable.com/developers/scripting/api/input) are available to be mocked. Check out the [input.test.ts](./test/input.test.ts) file for examples.
+
 ### Results
 
 The results from calling `runAirtableScript` are an object with several properties:

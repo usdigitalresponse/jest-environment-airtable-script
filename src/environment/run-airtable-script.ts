@@ -11,6 +11,8 @@ import {
 
 type DefaultDateLocale = 'friendly' | 'us' | 'european' | 'iso'
 
+type Output = [string, number, boolean] | { key: string; value: string }[]
+
 type RunScriptOptions = {
   script: string
   base: { base: unknown } | unknown
@@ -24,7 +26,7 @@ type RunScriptOptions = {
 }
 
 type RunScriptResult = {
-  output: unknown[]
+  output: Output
   mutations: Mutation[]
   console: ConsoleMessage[]
 }
@@ -47,6 +49,9 @@ type RunContext = {
 
 let sdkScript: string | null = null
 
+/**
+ * Runs a given Airtable script against a base fixture. Full definition is in src/environment/index.ts
+ */
 const runAirtableScript = async ({
   script,
   base,
@@ -77,8 +82,8 @@ const runAirtableScript = async ({
     __defaultDateLocale: defaultDateLocale,
     console: consoleAggregator(),
   }
-  vm.createContext(context)
 
+  vm.createContext(context)
   vm.runInContext(sdkScript, context)
   // We need to run the script in an async function so that we can use await
   // directly inside the script.
@@ -90,7 +95,7 @@ const runAirtableScript = async ({
   )
 
   return {
-    output: context.__output || [],
+    output: (context.__output as Output) || [],
     mutations: context.__mutations || [],
     console: context.console._getMessages(),
   }
