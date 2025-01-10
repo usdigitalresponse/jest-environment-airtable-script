@@ -1,4 +1,3 @@
-export { AirtableScriptEnvironment as TestEnvironment } from './environment'
 export { AirtableScriptEnvironment as default } from './environment'
 
 import type { AirtableScriptGlobal } from './environment'
