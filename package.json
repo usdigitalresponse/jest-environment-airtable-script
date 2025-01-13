@@ -35,7 +35,7 @@
     "jest": "JEST_AIRTABLE_TS_DEV=true jest",
     "jest:ci": "JEST_AIRTABLE_TS_DEV=true jest --reporters=default --reporters=jest-junit",
     "test": "run-s build:sdk jest",
-    "ci": "run-s lint jest:ci",
+    "ci": "run-s lint build:sdk jest:ci",
     "watch": "npm-watch test",
     "lint": "eslint ./src",
     "prepare": "husky"
