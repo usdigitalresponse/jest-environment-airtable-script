@@ -25,7 +25,7 @@ type EmptyRecord = {
   [key: string]: unknown
 }
 
-interface ExtensionInputConfig {
+type ExtensionInputConfig = {
   (settings: { title: string; description?: string; items: unknown[] }): {
     [key: string]: Table | Field | string | number
   }
@@ -53,8 +53,14 @@ type MockInput = {
     >
   ) => string
   tableAsync?: (label: string) => string
-  viewAsync?: (label: string, table: Table | string) => string
-  fieldAsync?: (label: string, table: Table | string) => string
+  viewAsync?: (
+    label: string,
+    tableOrTableNameOrTableId: Table | string
+  ) => string
+  fieldAsync?: (
+    label: string,
+    tableOrTableNameOrTableId: Table | string
+  ) => string
   recordAsync?: (
     label: string,
     options: {
@@ -114,6 +120,11 @@ type ExtensionInput = {
   config: ExtensionInputConfig
 }
 
+/**
+ * Checks whether a mock input method exists. If not, throws an error.
+ *
+ * @param string The name of the input method.
+ */
 const checkMockInput = (method: string): void => {
   if (!__mockInput) {
     throw new Error('mockInput is not defined')
@@ -126,6 +137,12 @@ const checkMockInput = (method: string): void => {
 }
 
 const automationInput: AutomationInput = {
+  /**
+   * Automations only get one source of input: an object of config values.
+   * Returns an object with all input keys mapped to their corresponding values.
+   *
+   * @see https://airtable.com/developers/scripting/api/input#config
+   */
   config: () => {
     checkMockInput('config')
     // @ts-ignore
@@ -134,18 +151,37 @@ const automationInput: AutomationInput = {
 }
 
 const extensionInput: ExtensionInput = {
+  /**
+   * Prompts the user to enter text. It's similar to prompt() in normal JavaScript, but looks much nicer.
+   *
+   * @see https://airtable.com/developers/scripting/api/input#text-async
+   */
   textAsync: (label) =>
     new Promise((resolve) => {
       checkMockInput('textAsync')
       // @ts-ignore
       resolve((__mockInput as MockInput).textAsync(label))
     }),
+
+  /**
+   * Prompts the user to choose one from a list of several options.
+
+You can mix and match both string and object options. The function will return either the label string, or the value from the object if one is specified.
+   * 
+   * @see https://airtable.com/developers/scripting/api/input#buttons-async 
+   */
   buttonsAsync: (label, options): Promise<string> =>
     new Promise((resolve) => {
       checkMockInput('buttonsAsync')
       // @ts-ignore
       resolve((__mockInput as MockInput).buttonsAsync(label, options))
     }),
+
+  /**
+   * Prompts the user to choose a table from a list of all tables in the base.
+   *
+   * @see https://airtable.com/developers/scripting/api/input#table-async
+   */
   tableAsync: (label) =>
     new Promise((resolve) => {
       checkMockInput('tableAsync')
@@ -154,26 +190,50 @@ const extensionInput: ExtensionInput = {
       // @ts-ignore
       resolve(globalThis.base.getTable(tableId))
     }),
-  viewAsync: (label, table) =>
+  /**
+   * Prompts the user to choose a view belonging to the table specified by tableOrTableNameOrTableId
+   *
+   * @see https://airtable.com/developers/scripting/api/input#view-async
+   */
+  viewAsync: (label, tableOrTableNameOrTableId) =>
     new Promise((resolve) => {
       checkMockInput('viewAsync')
-      const tableObj =
-        // @ts-ignore
-        typeof table === 'string' ? globalThis.base.getTable(table) : table
+      const table =
+        typeof tableOrTableNameOrTableId === 'string'
+          ? // @ts-ignore
+            globalThis.base.getTable(tableOrTableNameOrTableId)
+          : tableOrTableNameOrTableId
       // @ts-ignore
       const viewId = (__mockInput as MockInput).viewAsync(label, table)
-      resolve(tableObj.getView(viewId))
+      resolve(table.getView(viewId))
     }),
-  fieldAsync: (label, table) =>
+  /**
+   * Prompts the user to choose a field belonging to the table specified by tableOrTableNameOrTableId.
+   *
+   * @see https://airtable.com/developers/scripting/api/input#field-async
+   */
+  fieldAsync: (label, tableOrTableNameOrTableId) =>
     new Promise((resolve) => {
       checkMockInput('fieldAsync')
-      const tableObj =
-        // @ts-ignore
-        typeof table === 'string' ? globalThis.base.getTable(table) : table
+      const table =
+        typeof tableOrTableNameOrTableId === 'string'
+          ? // @ts-ignore
+            globalThis.base.getTable(tableOrTableNameOrTableId)
+          : tableOrTableNameOrTableId
       // @ts-ignore
-      const fieldId = (__mockInput as MockInput).fieldAsync(label, table)
-      resolve(tableObj.getField(fieldId))
+      const fieldId = (__mockInput as MockInput).fieldAsync(
+        label,
+        tableOrTableNameOrTableId
+      )
+      resolve(table.getField(fieldId))
     }),
+  /**
+   * Expands a list of records in the Airtable UI, and prompts the user to pick one.
+
+If the user picks a record, the record instance is returned. If the user dismisses the picker, null is returned. If there are no records to pick from in the source, the picker is not shown and null is returned.
+   *
+   * @see https://airtable.com/developers/scripting/api/input#record-async
+   */
   recordAsync: (
     label,
     source: Table | View | Array<Record> | RecordQueryResult,
@@ -207,7 +267,9 @@ const extensionInput: ExtensionInput = {
     }),
   /**
    * Prompts the user to import a file.
+   *
    * @todo need to document that the implementer is on their own for parsing
+   * @see https://airtable.com/developers/scripting/api/input#file-async
    */
   fileAsync: (
     label,
@@ -222,6 +284,12 @@ const extensionInput: ExtensionInput = {
       // @ts-ignore
       resolve((__mockInput as MockInput).fileAsync(label, options))
     }),
+  /**
+   * The extension input object exposes settings configurable through the settings
+   * button of the extension.
+   *
+   * @see https://airtable.com/developers/scripting/api/config
+   */
   config: Object.assign(
     (settings: {
       title: string
@@ -233,6 +301,11 @@ const extensionInput: ExtensionInput = {
       return (__mockInput as MockInput).config(settings, base)
     },
     {
+      /**
+       * Defines a setting for a Table.
+       *
+       * @see https://airtable.com/developers/scripting/api/config#input-config-table
+       */
       table: (
         key: string,
         options?:
@@ -249,6 +322,11 @@ const extensionInput: ExtensionInput = {
           description: options?.description,
         }
       },
+      /**
+       * Defines a setting for a Field.
+       *
+       * @see https://airtable.com/developers/scripting/api/config#input-config-field
+       */
       field: (
         key: string,
         options?:
@@ -265,6 +343,11 @@ const extensionInput: ExtensionInput = {
           description: options?.description,
         }
       },
+      /**
+       * Defines a setting for a View.
+       *
+       * @see https://airtable.com/developers/scripting/api/config#input-config-view
+       */
       view: (
         key: string,
         options?:
@@ -282,6 +365,11 @@ const extensionInput: ExtensionInput = {
           description: options?.description,
         }
       },
+      /**
+       * Defines a setting for a text variable.
+       *
+       * @see https://airtable.com/developers/scripting/api/config#input-config-text
+       */
       text: (
         key: string,
         options?:
@@ -298,6 +386,11 @@ const extensionInput: ExtensionInput = {
           description: options?.description,
         }
       },
+      /**
+       * Defines a setting for a number variable.
+       *
+       * @see https://airtable.com/developers/scripting/api/config#input-config-number
+       */
       number: (
         key: string,
         options?:
@@ -314,6 +407,12 @@ const extensionInput: ExtensionInput = {
           description: options?.description,
         }
       },
+      /**
+       * Defines a setting for a select option.
+       * The value returned will be the string value of the currently selected option.
+       *
+       * @see https://airtable.com/developers/scripting/api/config#input-config-select
+       */
       select: (
         key: string,
         options: {

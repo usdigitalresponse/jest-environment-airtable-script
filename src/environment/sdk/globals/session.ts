@@ -12,6 +12,11 @@ type Session = {
 }
 
 const session: Session = {
+  /**
+   * The user currently running the script, or null if the script is running in a publicly shared base.
+   *
+   * @see https://airtable.com/developers/scripting/api/session#current-user
+   */
   get currentUser() {
     if (typeof __currentUser !== 'undefined') {
       return __currentUser

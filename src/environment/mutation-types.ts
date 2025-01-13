@@ -3,7 +3,6 @@
  * Taken from:
  * @see https://github.com/Airtable/blocks/blob/6c0a2ed709a34e28cb3e999fc6cc6406eaa3817b/packages/sdk/src/types/mutations.ts
  */
-
 const MutationTypes = Object.freeze({
   SET_MULTIPLE_RECORD_CELL_VALUES: 'setMultipleRecordCellValues' as const,
   DELETE_RECORD: 'deleteRecord' as const,

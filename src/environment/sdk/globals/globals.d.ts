@@ -5,6 +5,11 @@ import type { Mutation } from './mutations'
 import type { FieldType } from './base/field'
 import type { ViewType } from './base/view'
 
+/**
+ * The "fixture" types are loose types used to defined base objects
+ * exported from the Test Fixture Generator extension. Since these
+ * are pretty inconsisstent, there are anumber of optional keys.
+ */
 type FixtureField = {
   id: string
   name: string
@@ -45,6 +50,9 @@ type FixtureBase = {
   collaborators: Collaborator[]
 }
 
+/**
+ * Declare all the global variables that are available in the scripting environment.
+ */
 declare global {
   var __currentUser: Collaborator | undefined
   var __inAutomation: boolean
