@@ -34,8 +34,8 @@
     "build:package": "rollup -c rollup.config.mjs",
     "jest": "JEST_AIRTABLE_TS_DEV=true jest",
     "test": "run-s build:sdk jest",
-    "test:ci": "run-s build:sdk jest --ci --reporters=default --reporters=jest-junit",
-    "ci": "run-s lint test",
+    "test:ci": "run-s build:sdk jest --reporters=default --reporters=jest-junit",
+    "ci": "run-s lint test:ci",
     "watch": "npm-watch test",
     "lint": "eslint ./src",
     "prepare": "husky"
