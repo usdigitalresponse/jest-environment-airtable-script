@@ -6,7 +6,7 @@ import { pascalCase } from '../../lib/pascal-case'
 import { MutationTypes } from '../../../mutation-types'
 import { FixtureTable } from '../globals'
 
-interface Base {
+type Base = {
   id: string | null
   name: string | null
   activeCollaborators: Array<Collaborator> | null
