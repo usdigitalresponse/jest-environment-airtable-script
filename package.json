@@ -34,6 +34,7 @@
     "build:package": "rollup -c rollup.config.mjs",
     "jest": "JEST_AIRTABLE_TS_DEV=true jest",
     "test": "run-s build:sdk jest",
+    "test:ci": "run-s build:sdk jest --ci --reporters=default --reporters=jest-junit",
     "ci": "run-s lint test",
     "watch": "npm-watch test",
     "lint": "eslint ./src",
@@ -60,6 +61,7 @@
     "eslint": "^9.17.0",
     "husky": "^9.1.7",
     "jest": "^29.7.0",
+    "jest-junit": "^16.0.0",
     "npm-run-all": "^4.1.5",
     "npm-watch": "^0.13.0",
     "rollup": "^4.29.1",
@@ -69,8 +71,15 @@
     "typescript-eslint": "^8.19.0"
   },
   "dependencies": {
-    "camelize-ts": "^3.0.0",
-    "detect-ts-node": "^1.0.5",
     "luxon": "^3.5.0"
+  },
+  "jest-junit": {
+    "outputDirectory": "reports",
+    "outputName": "jest-junit.xml",
+    "ancestorSeparator": " › ",
+    "uniqueOutputName": "false",
+    "suiteNameTemplate": "{filepath}",
+    "classNameTemplate": "{classname}",
+    "titleTemplate": "{title}"
   }
 }

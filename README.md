@@ -1,6 +1,6 @@
 **Please review USDR’s general guidelines for software & data, too: https://policies.usdigitalresponse.org/data-and-software-guidelines**
 
-[![Code of Conduct](https://img.shields.io/badge/%E2%9D%A4-code%20of%20conduct-blue.svg?style=flat)](./CODE_OF_CONDUCT.md)
+[![Code of Conduct](https://img.shields.io/badge/%E2%9D%A4-code%20of%20conduct-blue.svg?style=flat)](./CODE_OF_CONDUCT.md) ![Test and lint](https://github.com/usdigitalresponse/jest-environment-airtable-script/actions/workflows/ci.yml/badge.svg)
 
 # Jest Airtable Script
 

@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Fixed FS module not being available in the SDK.
+- Clarified some types in the input SDK.
+
 ## [0.0.3] - 2025-01-10
 
 ### Changed
