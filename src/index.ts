@@ -1,10 +1,10 @@
-export { AirtableScriptEnvironment as default } from './environment'
-
 import type { AirtableScriptGlobal } from './environment'
 import type {
   RunScriptOptions,
   RunScriptResult,
 } from './environment/run-airtable-script'
+
+export { AirtableScriptEnvironment as default } from './environment'
 
 declare global {
   /**
@@ -26,9 +26,11 @@ declare global {
   const runAirtableScript: (
     options: RunScriptOptions
   ) => Promise<RunScriptResult>
+
   /**
    * An object containing the different types of mutations that can be tracked in a script.
    */
+
   const MutationTypes: AirtableScriptGlobal['MutationTypes']
   /**
    * A special string that is used to denote that a call to output.clear() was made in the script.
