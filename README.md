@@ -241,6 +241,22 @@ it('logs a message', async () => {
 })
 ```
 
+#### Thrown errors
+
+If your script throws a new error to stop execution, you can catch that error in the results object. The error is stored in the `thrownErrors` property of the results object:
+
+```js
+it('throws an error', async () => {
+  const { thrownError } = await runAirtableScript({
+    script: `
+      throw new Error('This is an error')
+    `,
+    base: testBase,
+  })
+  expect(thrownError.message).toEqual('This is an error')
+})
+```
+
 ## Developing locally
 
 The environment variable `JEST_AIRTABLE_TS_DEV` should be set to `true` so that the `runScript` function pulls the compiled SDK mock from the `./src/environment/sdk/__sdk.js` file. This is already set to `true` in the `package.json` file.

@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.0] - 2025-03-12
+
+### Added
+
+- Handled thrown errors within script code. Errors are now caught and returned in the results object.
+
 ## [0.0.4] - 2025-01-13
 
 ### Changed
