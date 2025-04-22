@@ -120,13 +120,13 @@ You can pass one of `us`, `friendly`, `european`, or `iso`.
 
 ### Mocking fetch requests
 
-Airtable scripts can either use `fetch`, or in extensions `remoteFetchAsync` to make HTTP requests. You can mock these requests using the `fetchMock` setting:
+Airtable scripts can either use `fetch`, or in extensions `remoteFetchAsync` to make HTTP requests. You can mock these requests using the `mockFetch` setting:
 
 ```js
 const result = await runAirtableScript({
   script: myScript,
   base: baseFixture,
-  fetchMock: (url, request) => {
+  mockFetch: (url, request) => {
     return {
       status: 200,
       body: JSON.stringify({ message: 'Hello, world!' }),
