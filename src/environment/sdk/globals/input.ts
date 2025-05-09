@@ -39,6 +39,7 @@ type ExtensionInputConfig = {
 
 type MockInput = {
   config?: () => { [key: string]: unknown }
+  secret?: (key: string) => string
   textAsync?: (label: string) => string
   buttonsAsync?: (
     label: string,
@@ -83,6 +84,7 @@ type MockInput = {
 
 type AutomationInput = {
   config: () => { [key: string]: unknown }
+  secret: (key: string) => string | number
 }
 
 type ExtensionInput = {
@@ -104,7 +106,7 @@ type ExtensionInput = {
   recordAsync: (
     label: string,
     source: Table | View | Array<Record> | RecordQueryResult,
-    options: {
+    options?: {
       fields?: Array<Field | string>
       shouldAllowCreatingRecord?: boolean
     }
@@ -138,7 +140,7 @@ const checkMockInput = (method: string): void => {
 
 const automationInput: AutomationInput = {
   /**
-   * Automations only get one source of input: an object of config values.
+   * Automations have a single configuration input.
    * Returns an object with all input keys mapped to their corresponding values.
    *
    * @see https://airtable.com/developers/scripting/api/input#config
@@ -147,6 +149,22 @@ const automationInput: AutomationInput = {
     checkMockInput('config')
     // @ts-ignore
     return (__mockInput as MockInput).config() || {}
+  },
+  /**
+   * Support for retrieving secret values from the Builder Hub.
+   *
+   * @see https://airtable.com/developers/scripting/api/input#secret
+   */
+  secret: (key) => {
+    checkMockInput('secret')
+    // @ts-ignore
+    const secretValue = (__mockInput as MockInput).secret(key) || ''
+    // @ts-ignore
+    if (console._addSecretValue) {
+      // @ts-ignore
+      console._addSecretValue(secretValue)
+    }
+    return secretValue
   },
 }
 
@@ -237,7 +255,7 @@ If the user picks a record, the record instance is returned. If the user dismiss
   recordAsync: (
     label,
     source: Table | View | Array<Record> | RecordQueryResult,
-    options: {
+    options?: {
       fields?: Array<Field | string>
       shouldAllowCreatingRecord?: boolean
     }
@@ -246,7 +264,7 @@ If the user picks a record, the record instance is returned. If the user dismiss
       checkMockInput('recordAsync')
       // @ts-ignore
       const recordId = (__mockInput as MockInput).recordAsync(label, {
-        options,
+        options: options || {},
         source,
       })
       if (source instanceof Table || source instanceof View) {

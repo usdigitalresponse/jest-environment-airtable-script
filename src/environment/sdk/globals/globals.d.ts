@@ -59,6 +59,7 @@ declare global {
   var __base: FixtureBase
   var __defaultCursor: DefaultCursor | false
   var __isAirtableScriptTestEnvironment: boolean
+  var __secretValues: string[]
   var __mutations: Mutation[]
   var __mockInput: { [key: string]: unknown } | undefined
   var __mockFetch: Function | false

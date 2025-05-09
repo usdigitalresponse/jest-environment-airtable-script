@@ -1,4 +1,5 @@
 import randomRecords from './fixtures/random-records'
+import { SECRET_VALUE_REDACTED } from '../src/environment/console-aggregator'
 
 describe('Input', () => {
   describe('automation script', () => {
@@ -21,6 +22,56 @@ describe('Input', () => {
           JSON.stringify({ [key]: 'tbl123' })
         )
       }
+    })
+
+    it('passes a secret value', async () => {
+      const results = await runAirtableScript({
+        script: `
+        const config = input.secret('test-key')
+        output.set('config', JSON.stringify(config))
+      `,
+        base: randomRecords,
+        inAutomation: true,
+        mockInput: {
+          secret: (secretKey: string) => {
+            if (secretKey === 'test-key') {
+              return 'test-secret-value'
+            }
+            return null
+          },
+        },
+      })
+      expect(typeof results.output[0]).toEqual('object')
+      if (typeof results.output[0] === 'object') {
+        expect(results.output[0].key).toEqual('config')
+        expect(results.output[0].value).toEqual(
+          JSON.stringify('test-secret-value')
+        )
+      }
+    })
+
+    it('masks a secret value when console.logged', async () => {
+      const results = await runAirtableScript({
+        script: `
+        const config = input.secret('test-key')
+        console.log(config)
+      `,
+        base: randomRecords,
+        inAutomation: true,
+        mockInput: {
+          secret: (secretKey: string) => {
+            if (secretKey === 'test-key') {
+              return 'test-secret-value'
+            }
+            return null
+          },
+        },
+      })
+      console.log(results)
+      expect(results.console[0]).toEqual({
+        message: SECRET_VALUE_REDACTED,
+        type: 'log',
+      })
     })
   })
   describe('extension script', () => {
