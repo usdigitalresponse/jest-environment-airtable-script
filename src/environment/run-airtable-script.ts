@@ -89,7 +89,7 @@ const runAirtableScript = async ({
   vm.createContext(context)
   vm.runInContext(sdkScript, context)
 
-  let thrownError: any
+  let thrownError: unknown
 
   try {
     // We need to run the script in an async function so that we can use await
