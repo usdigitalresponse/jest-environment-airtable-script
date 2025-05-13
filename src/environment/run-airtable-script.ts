@@ -29,7 +29,7 @@ type RunScriptResult = {
   output: Output
   mutations: Mutation[]
   console: ConsoleMessage[]
-  thrownError: false | Error
+  thrownError: unknown
 }
 
 type RunContext = {
