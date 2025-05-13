@@ -13,7 +13,7 @@ globalThis.__base = {
         {
           id: 'fld1',
           name: 'Field 1',
-          type: 'text',
+          type: 'singleLineText',
         },
         {
           id: 'fld2',
@@ -65,24 +65,46 @@ globalThis.__base = {
     {
       id: 'tbl2',
       name: 'Table 2',
+      fields: [],
+      records: [],
+      views: [],
     },
   ],
 }
 
 describe('automationInput', () => {
-  it('should return the results of a config callback', () => {
-    globalThis.__mockInput = {
-      config: () => ({ key: 'value' }),
-    }
-    const result = automationInput.config()
-    expect(result).toEqual({ key: 'value' })
+  describe('config', () => {
+    it('should return the results of a config callback', () => {
+      globalThis.__mockInput = {
+        config: () => ({ key: 'value' }),
+      }
+      const result = automationInput.config()
+      expect(result).toEqual({ key: 'value' })
+    })
+
+    it('should throw an error if no config callback is provided', () => {
+      globalThis.__mockInput = {}
+      expect(() => automationInput.config()).toThrow(
+        'input.config() is called, but mockInput.config() is not implemented'
+      )
+    })
   })
 
-  it('should throw an error if no config callback is provided', () => {
-    globalThis.__mockInput = {}
-    expect(() => automationInput.config()).toThrow(
-      'input.config() is called, but mockInput.config() is not implemented'
-    )
+  describe('secret', () => {
+    it('should return the results of a secret callback', () => {
+      globalThis.__mockInput = {
+        secret: (key: string) => (key === 'testKey' ? 'value' : null),
+      }
+      const result = automationInput.secret('testKey')
+      expect(result).toEqual('value')
+    })
+
+    it('should throw an error if no secret callback is provided', () => {
+      globalThis.__mockInput = {}
+      expect(() => automationInput.secret('test')).toThrow(
+        'input.secret() is called, but mockInput.secret() is not implemented'
+      )
+    })
   })
 })
 
@@ -247,7 +269,7 @@ describe('extensionInput', () => {
       // @ts-ignore
       const table = globalThis.base.getTable('tbl1')
       const result = await extensionInput.recordAsync(randomLabel, table)
-      expect(result.id).toEqual('rec1')
+      expect(result && result.id).toEqual('rec1')
     })
 
     it('should return a record when given a View object', async () => {
@@ -263,7 +285,7 @@ describe('extensionInput', () => {
       // @ts-ignore
       const view = globalThis.base.getTable('tbl1').getView('view1')
       const result = await extensionInput.recordAsync(randomLabel, view)
-      expect(result.id).toEqual('rec2')
+      expect(result && result.id).toEqual('rec2')
     })
 
     it('should return a record when given a RecordQueryResult object', async () => {
@@ -281,7 +303,7 @@ describe('extensionInput', () => {
         .getTable('tbl1')
         .selectRecordsAsync()
       const result = await extensionInput.recordAsync(randomLabel, records)
-      expect(result.id).toEqual('rec1')
+      expect(result && result.id).toEqual('rec1')
     })
 
     it('should return a record when given an array of records', async () => {
@@ -302,7 +324,7 @@ describe('extensionInput', () => {
         randomLabel,
         records.records
       )
-      expect(result.id).toEqual('rec1')
+      expect(result && result.id).toEqual('rec1')
     })
 
     it('should throw an error if given an invalid source', async () => {
@@ -316,6 +338,7 @@ describe('extensionInput', () => {
         },
       }
       await expect(
+        // @ts-ignore
         extensionInput.recordAsync(randomLabel, 'tbl1')
       ).rejects.toThrow('Invalid source type')
     })
@@ -324,6 +347,7 @@ describe('extensionInput', () => {
       globalThis.__mockInput = {}
       const randomLabel = `Record label ${Math.random()}`
       await expect(
+        // @ts-ignore
         extensionInput.recordAsync(randomLabel, 'tbl1')
       ).rejects.toThrow(
         'input.recordAsync() is called, but mockInput.recordAsync() is not implemented'

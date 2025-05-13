@@ -137,7 +137,9 @@ const result = await runAirtableScript({
 
 ### Mocking user inputs
 
-You can mock any `input` from either an automation input or user interaction using the `mockInput` setting:
+You can mock any `input` from either an automation input or user interaction using the `mockInput` setting. Every [input method for extensions or automations](https://airtable.com/developers/scripting/api/input) are available to be mocked. Check out the [input.test.ts](./test/input.test.ts) file for examples.
+
+#### Sample mock for an extension
 
 ```js
 const results = await runAirtableScript({
@@ -157,7 +159,23 @@ const results = await runAirtableScript({
 })
 ```
 
-Every [input method for extensions or automations](https://airtable.com/developers/scripting/api/input) are available to be mocked. Check out the [input.test.ts](./test/input.test.ts) file for examples.
+#### Sample mock for an auotmation
+
+```js
+const results = await runAirtableScript({
+  script: `
+  const config = await input.config()
+  output.inspect(config.name)
+`,
+  base: randomRecords,
+  mockInput: {
+    // @ts-ignore
+    config: () => ({
+      name: 'Test name',
+    }),
+  },
+})
+```
 
 ### Results
 

@@ -29,7 +29,7 @@ type RunScriptResult = {
   output: Output
   mutations: Mutation[]
   console: ConsoleMessage[]
-  thrownError: false | unknown
+  thrownError: unknown
 }
 
 type RunContext = {
@@ -44,7 +44,7 @@ type RunContext = {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
   __mockFetch?: Function | false
   __input?: unknown
-  __scriptError: false | unknown
+  __scriptError: false | Error
   __defaultDateLocale: DefaultDateLocale
   console: ConsoleAggregator
 }
@@ -89,7 +89,7 @@ const runAirtableScript = async ({
   vm.createContext(context)
   vm.runInContext(sdkScript, context)
 
-  let thrownError: false | unknown = false
+  let thrownError: unknown
 
   try {
     // We need to run the script in an async function so that we can use await
