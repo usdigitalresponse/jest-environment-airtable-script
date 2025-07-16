@@ -38,7 +38,10 @@ const consoleAggregator = (): ConsoleAggregator => {
       return message
     }
     return secretValues.reduce(
-      (acc, value) => acc.replace(value, SECRET_VALUE_REDACTED),
+      (acc, value) =>
+        typeof acc === 'string'
+          ? acc.replace(value, SECRET_VALUE_REDACTED)
+          : acc,
       message
     )
   }
