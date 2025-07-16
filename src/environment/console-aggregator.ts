@@ -3,7 +3,7 @@
  * Airtable seems to just track all the secret values and redact them using a search
  * when outputting the console.
  */
-const SECRET_VALUE_REDACTED: string = '[secret value redacted]'
+const SECRET_VALUE_REDACTED: string = '[secret value is hidden]'
 
 type ConsoleMessage = {
   type: 'log' | 'warn' | 'error'
