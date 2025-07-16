@@ -67,9 +67,55 @@ describe('Input', () => {
           },
         },
       })
-      console.log(results)
       expect(results.console[0]).toEqual({
         message: SECRET_VALUE_REDACTED,
+        type: 'log',
+      })
+    })
+
+    it('masks a partial secret value when console.logged', async () => {
+      const results = await runAirtableScript({
+        script: `
+        const config = input.secret('test-key')
+        console.log(\`hello, \${config}\`)
+      `,
+        base: randomRecords,
+        inAutomation: true,
+        mockInput: {
+          secret: (secretKey: string) => {
+            if (secretKey === 'test-key') {
+              return 'test-secret-value'
+            }
+            return null
+          },
+        },
+      })
+      expect(results.console[0]).toEqual({
+        message: `hello, ${SECRET_VALUE_REDACTED}`,
+        type: 'log',
+      })
+    })
+
+    it('does not try to mask a secret in a non-string item is logged', async () => {
+      const results = await runAirtableScript({
+        script: `
+        const config = input.secret('test-key')
+        console.log(1)
+      `,
+        base: randomRecords,
+        inAutomation: true,
+        mockInput: {
+          secret: (secretKey: string) => {
+            if (secretKey === 'test-key') {
+              return 'test-secret-value'
+            }
+            return null
+          },
+        },
+      })
+
+      expect(results.console[0]).toEqual({
+        message: 1,
         type: 'log',
       })
     })
